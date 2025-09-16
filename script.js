@@ -1,38 +1,56 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const info = document.getElementById("info");
 
 // Pelota
 let ballRadius = 8;
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-let dx = 2;
-let dy = -2;
+let x, y, dx, dy;
 
 // Paleta
 const paddleHeight = 10;
 const paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth) / 2;
+let paddleX;
+
+// Controles
 let rightPressed = false;
 let leftPressed = false;
 
 // Bloques
-const brickRowCount = 3;
-const brickColumnCount = 5;
+let brickRowCount;
+let brickColumnCount = 5;
 const brickWidth = 75;
 const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
-
 let bricks = [];
-for (let c = 0; c < brickColumnCount; c++) {
-  bricks[c] = [];
-  for (let r = 0; r < brickRowCount; r++) {
-    bricks[c][r] = { x: 0, y: 0, status: 1 };
-  }
-}
 
-let score = 0;
+// Juego
+let score;
+let lives = 3;
+let level = 1;
+let gameRunning = true;
+
+// Inicialización
+function initLevel() {
+  x = canvas.width / 2;
+  y = canvas.height - 30;
+  dx = 2 + level * 0.5;
+  dy = -(2 + level * 0.5);
+  paddleX = (canvas.width - paddleWidth) / 2;
+  score = 0;
+  brickRowCount = 2 + level; // aumenta filas según nivel
+
+  bricks = [];
+  for (let c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r++) {
+      bricks[c][r] = { x: 0, y: 0, status: 1 };
+    }
+  }
+  gameRunning = true;
+  info.textContent = `Nivel ${level} - Vidas: ${lives}`;
+}
 
 // Controles
 document.addEventListener("keydown", keyDownHandler, false);
@@ -48,8 +66,11 @@ function keyUpHandler(e) {
   else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
 }
 
-// Colisión con bloques
+// Colisiones con bloques
 function collisionDetection() {
+  let totalBricks = brickRowCount * brickColumnCount;
+  let brokenBricks = 0;
+
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
       let b = bricks[c][r];
@@ -63,13 +84,21 @@ function collisionDetection() {
           dy = -dy;
           b.status = 0;
           score++;
-          if (score === brickRowCount * brickColumnCount) {
-            alert("¡Ganaste! 🏆");
-            document.location.reload();
-          }
         }
+      } else {
+        brokenBricks++;
       }
     }
+  }
+
+  if (brokenBricks === totalBricks) {
+    gameRunning = false;
+    level++;
+    setTimeout(() => {
+      alert(`¡Nivel ${level - 1} superado!`);
+      initLevel();
+      draw();
+    }, 100);
   }
 }
 
@@ -110,20 +139,21 @@ function drawPaddle() {
   ctx.closePath();
 }
 
-// Dibujar puntuación
-function drawScore() {
-  ctx.font = "16px Arial";
+// Dibujar puntuación y vidas
+function drawHUD() {
+  ctx.font = "14px Arial";
   ctx.fillStyle = "#fff";
   ctx.fillText("Puntos: " + score, 8, 20);
+  ctx.fillText("Vidas: " + lives, canvas.width - 65, 20);
 }
 
-// Dibujar todo
+// Juego principal
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBricks();
   drawBall();
   drawPaddle();
-  drawScore();
+  drawHUD();
   collisionDetection();
 
   // Rebote en paredes
@@ -133,8 +163,19 @@ function draw() {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy;
     } else {
-      alert("¡Game Over!");
-      document.location.reload();
+      lives--;
+      gameRunning = false;
+      if (lives <= 0) {
+        setTimeout(() => {
+          alert("¡Game Over!");
+          document.location.reload();
+        }, 100);
+      } else {
+        setTimeout(() => {
+          initLevel();
+          draw();
+        }, 100);
+      }
     }
   }
 
@@ -142,13 +183,12 @@ function draw() {
   y += dy;
 
   // Movimiento de paleta
-  if (rightPressed && paddleX < canvas.width - paddleWidth) {
-    paddleX += 5;
-  } else if (leftPressed && paddleX > 0) {
-    paddleX -= 5;
-  }
+  if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += 5;
+  else if (leftPressed && paddleX > 0) paddleX -= 5;
 
-  requestAnimationFrame(draw);
+  if (gameRunning) requestAnimationFrame(draw);
 }
 
+// Iniciar primer nivel
+initLevel();
 draw();

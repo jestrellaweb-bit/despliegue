@@ -22,3 +22,9 @@ canvas {
   border: 2px solid #fff;
   border-radius: 8px;
 }
+
+#info {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #aaa;
+}
