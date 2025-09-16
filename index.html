@@ -3,31 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boxeo App</title>
+  <title>Mini Arkanoid</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Boxeo App</h1>
-
-  <div class="ring">
-    <div class="fighter red">
-      <p>Rojo</p>
-      <p class="score" id="scoreRed">0</p>
-      <button onclick="addPoint('red')">+ Punto</button>
-    </div>
-
-    <div class="vs">VS</div>
-
-    <div class="fighter blue">
-      <p>Azul</p>
-      <p class="score" id="scoreBlue">0</p>
-      <button onclick="addPoint('blue')">+ Punto</button>
-    </div>
-  </div>
-
-  <div class="timer" id="timer">03:00</div>
-  <button onclick="toggleTimer()">▶ Iniciar / ⏸ Pausar</button>
-
+  <h1>Mini Arkanoid</h1>
+  <canvas id="gameCanvas" width="480" height="320"></canvas>
   <script src="script.js"></script>
 </body>
 </html>
