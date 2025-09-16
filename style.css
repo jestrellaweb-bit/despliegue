@@ -1,86 +1,81 @@
-/* Reset rápido */
+/* Reset y tipografía */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Arial", sans-serif;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ecd157;
+  background: #111;
   color: #fff;
-
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding: 1rem;
-}
-
-.container {
-  /* 🎨 efecto cristal */
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-
-  max-width: 600px;
-  width: 100%;
-  padding: 2rem;
-  margin: auto;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 2rem;
 }
 
 h1 {
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: #fff;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-header p {
-  color: #eee;
+.ring {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 2rem;
 }
 
-main {
+.fighter {
   text-align: center;
+  font-size: 1.2rem;
+}
+
+.score {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.red {
+  color: #ff4d4d;
+}
+
+.blue {
+  color: #4d9fff;
+}
+
+.vs {
+  font-size: 2rem;
+  opacity: 0.7;
+}
+
+.timer {
+  font-size: 2rem;
+  font-weight: bold;
+  background: #222;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
 
 button {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
-  color: #fff;
+  background: #fff;
+  color: #111;
   font-weight: bold;
-  transition: transform 0.2s ease, background 0.3s ease;
-  backdrop-filter: blur(6px);
+  transition: 0.3s;
 }
 
 button:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-}
-
-#message {
-  margin-top: 1.5rem;
-  font-size: 1.2rem;
-  font-weight: bold;
+  background: #ff4d4d;
   color: #fff;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-footer {
-  text-align: center;
-  padding: 1rem 0;
-  margin-top: auto;
-  color: #eee;
-  font-size: 0.9rem;
 }

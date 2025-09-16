@@ -1,14 +1,38 @@
-const btn = document.getElementById("actionBtn");
-const msg = document.getElementById("message");
+let scoreRed = 0;
+let scoreBlue = 0;
+let timerInterval;
+let timeLeft = 180; // 3 minutos
+let running = false;
 
-const mensajes = [
-  "¡Así de rápido se despliega un proyecto con Netlify! 😎",
-  "Tu proyecto ya está desplegado. 🚀",
-  "¡Hola Mundo! 🌏",
-  "Desplegar nunca fue tan fácil. 😉",
-];
+function addPoint(fighter) {
+  if (fighter === "red") {
+    scoreRed++;
+    document.getElementById("scoreRed").textContent = scoreRed;
+  } else {
+    scoreBlue++;
+    document.getElementById("scoreBlue").textContent = scoreBlue;
+  }
+}
 
-btn.addEventListener("click", () => {
-  const randomMsg = mensajes[Math.floor(Math.random() * mensajes.length)];
-  msg.textContent = randomMsg;
-});
+function updateTimer() {
+  const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+  const seconds = String(timeLeft % 60).padStart(2, '0');
+  document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    running = false;
+  } else {
+    timeLeft--;
+  }
+}
+
+function toggleTimer() {
+  if (!running) {
+    running = true;
+    timerInterval = setInterval(updateTimer, 1000);
+  } else {
+    running = false;
+    clearInterval(timerInterval);
+  }
+}
